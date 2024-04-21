@@ -13,10 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
+        // volumeInfo ->
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
+            $table->string('authors'); // array
             $table->string('title');
+            $table->string('subtitle');
             $table->string('description');
+            $table->string('categories'); // array
+            $table->string('canonicalVolumeLink');
+            $table->string('infoLink');
+            $table->string('previewLink');
+            $table->string('imageLinks_thumbnail'); // imageLinks->thumbnail
+            $table->string('publishedDate');
             $table->timestamps();
         });
     }
