@@ -7,8 +7,9 @@ class GoogleBookVolume
     public ?string $authors; // array / json
     public ?string $title;
     public ?string $subtitle;
+    public ?string $description;
     public ?string $categories; // array / json
-    public ?string $volumeLink;
+    public ?string $canonicalVolumeLink;
     public ?string $infoLink;
     public ?string $previewLink;
     public ?string $imageLinks_thumbnail; // imageLinks->thumbnail
@@ -27,10 +28,6 @@ class GoogleBookVolume
         'publishedDate'          => 'string',
     ];
 
-    /*
-     * NEED TO FINISH DTO
-    */
-
     public function __construct(object $data)
     {
         $info = $data->volumeInfo;
@@ -39,7 +36,7 @@ class GoogleBookVolume
             if ($type === 'string') {
                 return $value;
             } elseif ($type === 'array') {
-                return is_array($value) ? json_encode($value) : $value;
+                return is_array($value) ? implode(', ', $value) : $value;
             } else {
                 throw new \Exception("Invalid property type found: `$type`");
             }
@@ -48,7 +45,7 @@ class GoogleBookVolume
         foreach ($this->properties as $property => $type) {
             if (!str_contains($property, '_')) {
                 // if no '_', simple property to property
-                $this->$property = $setProperty($info->$property, $property, $type);
+                $this->$property = $setProperty($info->$property ?? '', $property, $type);
             } else {
                 // otherwise, need to split
                 $deepProps = explode('_', $property);
@@ -64,5 +61,16 @@ class GoogleBookVolume
                 }
             }
         }
+    }
+
+    public function toArray(): array
+    {
+        $data = [];
+
+        foreach ($this->properties as $key => $type) {
+            $data[$key] = $this->$key;
+        }
+
+        return $data;
     }
 }

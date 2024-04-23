@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('authors'); // array
             $table->string('title');
             $table->string('subtitle');
-            $table->string('description');
+            $table->string('description', 2056);
             $table->string('categories'); // array
             $table->string('canonicalVolumeLink');
             $table->string('infoLink');
