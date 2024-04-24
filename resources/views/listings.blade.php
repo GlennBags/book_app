@@ -1,42 +1,36 @@
 @extends('layout')
 
 @section('content')
-
 <div class="lg:grid lg:grid-cols-2 gap-4 space-y-4 md:space-y-0 mx-4">
 
 @unless(empty($listings))
 
+<?php /** @var \App\Models\Listing $listing */ ?>
 @foreach($listings as $listing)
     <!-- Item 1 -->
     <div class="bg-gray-50 border border-gray-200 rounded p-6">
         <div class="flex">
             <img
                     class="hidden w-48 mr-6 md:block"
-                    src="images/acme.png"
+                    src="{{ $listing->imageLinks_thumbnail }}"
                     alt=""
             />
             <div>
                 <h3 class="text-2xl">
                     <a href="show.html">{{$listing->title}}</a>
                 </h3>
-                <div class="text-xl font-bold mb-4">Acme Corp</div>
-                <ul class="flex">
-                    <li class="flex items-center justify-center bg-black text-white rounded-xl py-1 px-3 mr-2 text-xs">
-                        <a href="#">Laravel</a>
-                    </li>
-                    <li class="flex items-center justify-center bg-black text-white rounded-xl py-1 px-3 mr-2 text-xs">
-                        <a href="#">API</a>
-                    </li>
-                    <li class="flex items-center justify-center bg-black text-white rounded-xl py-1 px-3 mr-2 text-xs">
-                        <a href="#">Backend</a>
-                    </li>
-                    <li class="flex items-center justify-center bg-black text-white rounded-xl py-1 px-3 mr-2 text-xs">
-                        <a href="#">Vue</a>
-                    </li>
-                </ul>
+                <div class="text-xl font-bold mb-4">{{ $listing->authors }}</div>
+                <div class="text-xl {{ $listing->subtitle ? 'font-bold' : '' }} mb-4">
+                    <span><i>{{ $listing->subtitle ?: 'no subtitle' }}</i></span>
+                </div>
+                <div class="text-xl text-blue-700 mb-4">
+                    <i class="fa-solid fa-diamond-turn-right"></i>
+                    <a href="{{ $listing->previewLink }}" target="_blank">Preview Link</a>
+                </div>
+                <div class="text-xl font-normal mb-4">Description: {{ $listing->description }}</div>
+                <div class="text-xl  mb-4">Published {{ $listing->publishedDate }}</div>
                 <div class="text-lg mt-4">
-                    <i class="fa-solid fa-location-dot"></i> Boston,
-                                                             MA
+                    <i class="fa-solid fa-book"></i> {{ $listing->categories }}
                 </div>
             </div>
         </div>

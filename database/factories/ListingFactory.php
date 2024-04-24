@@ -17,8 +17,16 @@ class ListingFactory extends Factory
     public function definition()
     {
         return [
+            'authors' => $this->faker->name . ', ' . $this->faker->name,
             'title' => $this->faker->sentence,
+            'subtitle' => $this->faker->paragraph,
             'description' => $this->faker->paragraph,
+            'categories' => $this->faker->paragraph,
+            'canonicalVolumeLink' => $this->faker->paragraph,
+            'infoLink' => $this->faker->paragraph,
+            'previewLink' => $this->faker->paragraph,
+            'imageLink_thumbnail' => $this->faker->paragraph,
+            'publishedDate' => $this->faker->paragraph,
         ];
     }
 }
