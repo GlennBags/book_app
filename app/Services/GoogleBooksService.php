@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\GoogleBookVolume;
 use App\Models\Listing;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Collection;
@@ -47,13 +48,13 @@ class GoogleBooksService
         $this->getApiKey();
         $this->buildUrl($params);
         $this->fetch();
-        $this->saveResults();
+        return $this->saveResults();
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function saveResults()
+    public function saveResults(): array
     {
         $decoded = json_decode($this->json);
         $this->totalResults = $decoded->totalItems;
@@ -61,10 +62,15 @@ class GoogleBooksService
 
         $this->collection = collect($decoded->items);
 
+        $listing = [];
         foreach ($this->collection as $item) {
+            // sanitize the data to store
             $book = (new GoogleBookVolume($item))->toArray();
             Listing::create($book);
+            $listing[] = $book;
         }
+
+        return $listing;
     }
 
     public function buildUrl(array $params): string

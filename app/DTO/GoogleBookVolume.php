@@ -2,6 +2,8 @@
 
 namespace App\DTO;
 
+use Exception;
+
 class GoogleBookVolume
 {
     public ?string $authors; // array / json
@@ -38,7 +40,7 @@ class GoogleBookVolume
             } elseif ($type === 'array') {
                 return is_array($value) ? implode(', ', $value) : $value;
             } else {
-                throw new \Exception("Invalid property type found: `$type`");
+                throw new Exception("Invalid property type found: `$type`");
             }
         };
 
@@ -55,7 +57,11 @@ class GoogleBookVolume
                     if ($deepProp === $end) {
                         $this->$property = $setProperty($final->$deepProp, $property, $type);
                     } else {
-                        if (!isset($final->$deepProp)) dd($info, $deepProp, $final);
+                        if (!isset($final->$deepProp)) {
+                            // if we don't find the property, then set a default
+                            $this->$property = $type === 'string' ? '' : [];
+                            break;
+                        }
                         $final = $final->$deepProp;
                     }
                 }
