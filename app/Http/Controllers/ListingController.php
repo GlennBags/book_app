@@ -31,7 +31,7 @@ class ListingController extends Controller
         return view('listings', [
             'heading' => "Latest",
             'listings' => collect($listings),
-            ]);
+        ]);
     }
 
     /**
