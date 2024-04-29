@@ -1,6 +1,6 @@
 @props(['listing'])
 
-<div class="bg-gray-50 border border-gray-200 rounded p-6">
+<x-card>
     <div class="flex items-start">
         <img class="hidden w-48 h-auto mr-6 md:block object-contain"
              @if($listing->imageLinks_thumbnail)
@@ -28,4 +28,4 @@
             </div>
         </div>
     </div>
-</div>
+</x-card>
