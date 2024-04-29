@@ -28,7 +28,7 @@ class ListingController extends Controller
             $listings = Listing::all();
         }
 
-        return view('listings', [
+        return view('book.listings', [
             'heading' => "Latest",
             'listings' => collect($listings),
         ]);

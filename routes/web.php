@@ -19,7 +19,7 @@ use GuzzleHttp\Client;
 
 // all listings
 Route::get('/', function () {
-    return view('listings', [
+    return view('book.listings', [
         'heading' => "Latest",
         'listings' => Listing::all(),
     ]);
@@ -27,7 +27,7 @@ Route::get('/', function () {
 
 // all listings
 Route::get('/listings/{id}', function ($id) {
-    return view('listing', [
+    return view('book.listing', [
         'listing' => Listing::find($id),
     ]);
 });
