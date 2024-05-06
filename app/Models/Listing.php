@@ -16,8 +16,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $previewLink
  * @property string $imageLinks_thumbnail
  * @property string $publishedDate
+ * @property int|null $isbn_10
+ * @property int|null  $isbn_13
  */
-class Listing extends Model
+class Listing extends BaseModel
 {
     use HasFactory;
 

@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('previewLink');
             $table->string('imageLinks_thumbnail'); // imageLinks->thumbnail
             $table->string('publishedDate');
+            $table->bigInteger('isbn_10')->nullable();
+            $table->bigInteger('isbn_13')->nullable();
             $table->timestamps();
         });
     }

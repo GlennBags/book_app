@@ -6,16 +6,20 @@ use Exception;
 
 class GoogleBookVolume
 {
-    public ?string $authors; // array / json
-    public ?string $title;
-    public ?string $subtitle;
-    public ?string $description;
-    public ?string $categories; // array / json
-    public ?string $canonicalVolumeLink;
-    public ?string $infoLink;
-    public ?string $previewLink;
-    public ?string $imageLinks_thumbnail; // imageLinks->thumbnail
-    public ?string $publishedDate;
+    public ?string  $authors; // array / json
+    public ?string  $title;
+    public ?string  $subtitle;
+    public ?string  $description;
+    public ?string  $categories; // array / json
+    public ?string  $canonicalVolumeLink;
+    public ?string  $infoLink;
+    public ?string  $previewLink;
+    public ?string  $imageLinks_thumbnail; // imageLinks->thumbnail
+    public ?string  $publishedDate;
+    public int|null $ISBN_10;
+    public int|null $ISBN_13;
+
+    private array $validTypes = ['int', 'string', 'array',];
 
     private array $properties = [
         'authors'                => 'array',
@@ -28,6 +32,8 @@ class GoogleBookVolume
         'previewLink'            => 'string',
         'imageLinks_thumbnail'   => 'string',
         'publishedDate'          => 'string',
+        'ISBN_10'                => 'int',
+        'ISBN_13'                => 'int',
     ];
 
     public function __construct(object $data)
@@ -36,7 +42,9 @@ class GoogleBookVolume
 
         $setProperty = function($value, $property, $type) {
             if ($type === 'string') {
-                return $value;
+                return (string)$value;
+            } elseif ($type === 'int') {
+                return (int)$value;
             } elseif ($type === 'array') {
                 return is_array($value) ? implode(', ', $value) : $value;
             } else {
@@ -48,6 +56,15 @@ class GoogleBookVolume
             if (!str_contains($property, '_')) {
                 // if no '_', simple property to property
                 $this->$property = $setProperty($info->$property ?? '', $property, $type);
+            } elseif(str_contains($property, 'ISBN')) {
+                // is this book isn't released, won't have ISBN's yet
+                if (!isset($info->industryIdentifiers)) {
+                    $this->$property = null;
+                } else {
+                    $iiType = $info->industryIdentifiers;
+                    $value = $iiType[0]?->type === $property ? ($iiType[0]->identifier ?? null) : ($iiType[1]->identifier ?? null);
+                    $this->$property = (int)$value;
+                }
             } else {
                 // otherwise, need to split
                 $deepProps = explode('_', $property);
@@ -66,6 +83,12 @@ class GoogleBookVolume
                     }
                 }
             }
+        }
+
+        // found an extra long description, so
+        if (!isset($this->description)) $this->description = '';
+        if (strlen($this->description) > 2056) {
+            $this->description = substr($this->description, 0, 2056);
         }
     }
 

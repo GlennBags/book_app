@@ -20,17 +20,18 @@ class ListingController extends Controller
      * @return Application|Factory|View
      * @throws GuzzleException
      */
-    public function index(string $author = null)
+    public function index(Request $request)
     {
-        if ($author) {
-            $listings = GoogleBooksService::getByAuthor($author);
-        } else {
-            $listings = Listing::all();
+        $listings = Listing::orderBy('publishedDate');
+
+        if ($request->search) {
+            GoogleBooksService::getByAuthor($request->search);
+            $listings = $listings->where('authors', 'LIKE', "%{$request->search}%");
         }
 
         return view('book.listings', [
             'heading' => "Latest",
-            'listings' => collect($listings),
+            'listings' => $listings->orderBy('publishedDate', 'desc')->get(),
         ]);
     }
 

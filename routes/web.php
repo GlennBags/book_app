@@ -18,12 +18,7 @@ use GuzzleHttp\Client;
 */
 
 // all listings
-Route::get('/', function () {
-    return view('book.listings', [
-        'heading' => "Latest",
-        'listings' => Listing::all(),
-    ]);
-});
+Route::get('/', [ListingController::class, 'index']);
 
 // all listings
 Route::get('/listings/{id}', function ($id) {

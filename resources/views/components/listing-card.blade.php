@@ -21,6 +21,10 @@
                 <i class="fa-solid fa-diamond-turn-right"></i>
                 <a href="{{ $listing->previewLink }}" target="_blank">Preview Link</a>
             </div>
+            <div class="text-xl text-blue-700 mb-4">
+                <i class="fa-solid fa-diamond-turn-right"></i>
+                <a href="{{ $listing->infoLink }}" target="_blank">Info Link</a>
+            </div>
             <div class="text-xl font-normal mb-4">Description: {{ $listing->description }}</div>
             <div class="text-xl  mb-4">Published {{ $listing->publishedDate }}</div>
             <div class="text-lg mt-4">

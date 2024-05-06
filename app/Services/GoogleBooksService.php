@@ -41,6 +41,7 @@ class GoogleBooksService
 
     /**
      * @throws GuzzleException
+     * @throws Exception
      */
     public function execute(array $params)
     {
@@ -65,8 +66,22 @@ class GoogleBooksService
         $listing = [];
         foreach ($this->collection as $item) {
             // sanitize the data to store
-            $book = (new GoogleBookVolume($item))->toArray();
-            Listing::create($book);
+            $book = (new GoogleBookVolume($item));
+
+            if (!$book->ISBN_10 && !$book->ISBN_13) {
+                $bookNotStored = Listing::where('infoLink', $book->infoLink)->doesntExist();
+            } else {
+                $bookNotStored = Listing::where(function ($query) use ($book) {
+                    $query->whereNull('ISBN_10')
+                        ->orWhere('ISBN_10', $book->ISBN_10);
+                })
+                    ->where('ISBN_13', $book->ISBN_13)->doesntExist();
+            }
+
+            if ($bookNotStored) {
+                Listing::insert($book->toArray());
+            }
+
             $listing[] = $book;
         }
 
@@ -78,8 +93,15 @@ class GoogleBooksService
         $query = $params['query'] ?? '';
         $this->url = $this->baseUrl . $query;
         $author = $params['author'] ?? '';
+
         if ($author) {
             $this->url .= (($query ? '+' : '') . 'inauthor:' . str_replace(' ', '%20', $author));
+        }
+
+        if (!empty($params['orderBy'])) {
+            $this->url .= "&orderBy={$params['orderBy']}";
+        } else {
+            $this->url .= '&orderBy=newest';
         }
 
         return $this->url;
