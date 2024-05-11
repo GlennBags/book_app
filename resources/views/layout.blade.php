@@ -31,6 +31,9 @@
             <a href="/">
                 <img class="w-24 logo" src="{{ asset('images/TruvyReading.png') }}" alt=""/>
             </a>
+            <div>
+                <span class="text-3xl">Book Search - Find a book by author</span>
+            </div>
             <ul class="flex space-x-6 mr-6 text-lg">
                 <li>
                     <a href="register.html" class="hover:text-laravel">
