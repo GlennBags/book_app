@@ -26,7 +26,8 @@ class ListingController extends Controller
 
         if ($request->search) {
             GoogleBooksService::getByAuthor($request->search);
-            $listings = $listings->where('authors', 'LIKE', "%{$request->search}%");
+            $term = str_replace(' ', '%', $request->search);
+            $listings = $listings->where('authors', 'LIKE', "%{$term}%");
         }
 
         return view('book.listings', [
