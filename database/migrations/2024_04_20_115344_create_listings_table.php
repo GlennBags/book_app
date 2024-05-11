@@ -16,7 +16,7 @@ return new class extends Migration
         // volumeInfo ->
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
-            $table->string('authors'); // array
+            $table->string('authors', 2056);
             $table->string('title');
             $table->string('subtitle');
             $table->string('description', 2056);
