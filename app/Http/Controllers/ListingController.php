@@ -22,7 +22,7 @@ class ListingController extends Controller
      */
     public function index(Request $request)
     {
-        $listings = Listing::orderBy('publishedDate');
+        $listings = Listing::orderBy('publishedDate', 'desc');
 
         if ($request->search) {
             GoogleBooksService::getByAuthor($request->search);
@@ -31,7 +31,7 @@ class ListingController extends Controller
 
         return view('book.listings', [
             'heading' => "Latest",
-            'listings' => $listings->orderBy('publishedDate', 'desc')->get(),
+            'listings' => $listings->get(),
         ]);
     }
 
