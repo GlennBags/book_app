@@ -12,6 +12,7 @@
                 crossorigin="anonymous"
                 referrerpolicy="no-referrer"
         />
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
             tailwind.config = {
@@ -24,9 +25,12 @@
                 },
             };
         </script>
+
+        @stack('scripts')
+
         <title>Books Listings</title>
     </head>
-    <body class="mb-48">
+    <body id="content"  class="mb-48 bg-white text-gray-900">
         <nav class="flex justify-between items-center mb-4">
             <a href="/">
                 <img class="w-24 logo" src="{{ asset('images/TruvyReading.png') }}" alt=""/>
@@ -34,6 +38,9 @@
             <div>
                 <span class="text-3xl">Book Search - Find a book by author</span>
             </div>
+            <button id="dark-mode-toggle" class="bg-gray-800 text-white px-4 py-2 rounded">
+                Dark Mode
+            </button>
             <ul class="flex space-x-6 mr-6 text-lg">
                 <li>
                     <a href="register.html" class="hover:text-laravel">
@@ -54,12 +61,8 @@
         </main>
 
         <footer class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-laravel
-                        text-white h-24 mt-24 opacity-90 md:justify-center">
+                        text-white h-12 mt-24 opacity-90 md:justify-center">
             <p class="ml-2">Copyright &copy; 2024, All Rights reserved</p>
-
-            <a href="create.html" class="absolute top-1/3 right-10 bg-black text-white py-2 px-5">
-                Search an Author
-            </a>
         </footer>
     </body>
 </html>
