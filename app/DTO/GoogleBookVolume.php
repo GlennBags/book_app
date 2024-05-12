@@ -32,6 +32,7 @@ class GoogleBookVolume
         'previewLink'            => 'string',
         'imageLinks_thumbnail'   => 'string',
         'publishedDate'          => 'string',
+        'isEbook'                => 'bool',
         'ISBN_10'                => 'int',
         'ISBN_13'                => 'int',
     ];
@@ -39,12 +40,16 @@ class GoogleBookVolume
     public function __construct(object $data)
     {
         $info = $data->volumeInfo;
+        // add in isEbook
+        $info->isEbook = $data->saleInfo->isEbook;
 
         $setProperty = function($value, $property, $type) {
             if ($type === 'string') {
                 return (string)$value;
             } elseif ($type === 'int') {
                 return (int)$value;
+            } elseif ($type === 'bool') {
+                return (bool)$value;
             } elseif ($type === 'array') {
                 return is_array($value) ? implode(', ', $value) : $value;
             } else {

@@ -22,17 +22,19 @@ class ListingController extends Controller
      */
     public function index(Request $request)
     {
-        $listings = Listing::orderBy('publishedDate', 'desc');
 
-        if ($request->search) {
+        if (!$request->search) {
+            $results = Listing::orderBy('publishedDate', 'desc')->get();
+        } else {
+            // search via API
             GoogleBooksService::getByAuthor($request->search);
-            $term = str_replace(' ', '%', $request->search);
-            $listings = $listings->where('authors', 'LIKE', "%{$term}%");
+            // get from DB
+            $results = Listing::getByAuthor($request->search);
         }
 
         return view('book.listings', [
             'heading' => "Latest",
-            'listings' => $listings->get(),
+            'listings' => $results,
         ]);
     }
 

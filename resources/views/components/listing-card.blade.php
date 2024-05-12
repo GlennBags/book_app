@@ -3,6 +3,7 @@
 <x-card>
     <div class="flex items-start">
         <img class="hidden w-48 h-auto mr-6 md:block object-contain"
+             <?php /** @var \App\Models\Listing $listing */ ?>
              @if($listing->imageLinks_thumbnail)
                  src="{{ $listing->imageLinks_thumbnail }}"
              @else
@@ -27,8 +28,20 @@
             </div>
             <div class="text-xl font-normal mb-4">Description: {{ $listing->description }}</div>
             <div class="text-xl  mb-4">Published {{ $listing->publishedDate }}</div>
-            <div class="text-lg mt-4">
-                <i class="fa-solid fa-book"></i> {{ $listing->categories }}
+            <div class="text-lg mt-4 flex items-center">
+                @if ($listing->isEbook)
+                    <div class="relative">
+                        <img class="hidden w-14 h-auto md:block object-contain"
+                             src="{{ asset('/images/ebook.png') }}" alt="Ebook" />
+                        <span class="opacity-0 hover:opacity-100 duration-300 absolute inset-0 z-10 flex justify-center
+                                     items-center mt-9 text-dark-toggle">
+                            Ebook
+                        </span>
+                    </div>
+                @else
+                    <i class="fa-solid fa-book mr-2"></i>
+                @endif
+                    {{ $listing->categories }}
             </div>
         </div>
     </div>
