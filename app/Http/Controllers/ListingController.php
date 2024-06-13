@@ -35,7 +35,7 @@ class ListingController extends Controller
         return view('book.listings', [
             'heading' => "Latest",
             'listings' => $results,
-        ]);
+        ])->with('message', 'Listings processed');
     }
 
     /**
