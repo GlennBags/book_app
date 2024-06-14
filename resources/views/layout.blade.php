@@ -14,18 +14,7 @@
         />
         <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
         <script src="//unpkg.com/alpinejs" defer></script>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script>
-            tailwind.config = {
-                theme: {
-                    extend: {
-                        colors: {
-                            laravel: "#ef3b2d",
-                        },
-                    },
-                },
-            };
-        </script>
+        <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
 
         @stack('scripts')
 

@@ -32,7 +32,7 @@ class Listing extends BaseModel
         $listings = Listing::orderBy('publishedDate', 'desc');
 
         // if the author string is quoted, perform exact match
-        if (preg_match('/^(["\']).*\1$/m', $author) !== false) {
+        if (preg_match('/^(["\']).*\1$/m', $author) === 1) {
             $author = trim($author, "'\"");
         } else {
             $author = str_replace(' ', '%', $author);
