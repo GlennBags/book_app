@@ -22,9 +22,8 @@ class ListingController extends Controller
      */
     public function index(Request $request)
     {
-
         if (!$request->search) {
-            $results = Listing::orderBy('publishedDate', 'desc')->get();
+            $results = Listing::orderBy('publishedDate', 'desc');
         } else {
             // search via API
             GoogleBooksService::getByAuthor($request->search);
@@ -34,7 +33,7 @@ class ListingController extends Controller
 
         return view('book.listings', [
             'heading' => "Latest",
-            'listings' => $results,
+            'listings' => $results->paginate(10)->withQueryString(),
         ])->with('message', 'Listings processed');
     }
 

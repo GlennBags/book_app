@@ -27,7 +27,11 @@ class Listing extends BaseModel
 
     protected $guarded = ['id'];
 
-    public static function getByAuthor(string $author): Collection
+    /**
+     * @param string $author
+     * @return \Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Builder
+     */
+    public static function getByAuthor(string $author)
     {
         $listings = Listing::orderBy('publishedDate', 'desc');
 
@@ -38,6 +42,6 @@ class Listing extends BaseModel
             $author = str_replace(' ', '%', $author);
         }
 
-        return $listings->where('authors', 'LIKE', "%$author%")->get();
+        return $listings->where('authors', 'LIKE', "%$author%");
     }
 }

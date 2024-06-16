@@ -21,6 +21,9 @@
         @endunless
 
     </div>
+    <div class="mt-4 px-4">
+        {!! $listings->links() !!}
+    </div>
 @endsection
 
 @push('scripts')
