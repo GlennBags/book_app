@@ -38,10 +38,12 @@ class Listing extends BaseModel
         // if the author string is quoted, perform exact match
         if (preg_match('/^(["\']).*\1$/m', $author) === 1) {
             $author = trim($author, "'\"");
-        } else {
-            $author = str_replace(' ', '%', $author);
         }
+        // else {
+        //     $author = str_replace(' ', '%', $author);
+        // }
+        // return $listings->where('authors', 'LIKE', "%$author%");
 
-        return $listings->where('authors', 'LIKE', "%$author%");
+        return $listings->whereRaw('MATCH(authors) AGAINST(? IN BOOLEAN MODE)', ["*$author*"]);
     }
 }
