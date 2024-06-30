@@ -44,6 +44,6 @@ class Listing extends BaseModel
         // }
         // return $listings->where('authors', 'LIKE', "%$author%");
 
-        return $listings->whereRaw('MATCH(authors) AGAINST(? IN BOOLEAN MODE)', ["*$author*"]);
+        return $listings->whereFullText('authors', $author);
     }
 }

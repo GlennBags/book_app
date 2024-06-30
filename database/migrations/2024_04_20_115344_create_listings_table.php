@@ -16,7 +16,7 @@ return new class extends Migration
         // volumeInfo ->
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
-            $table->text('authors');
+            $table->text('authors')->fulltext();
             $table->string('title');
             $table->string('subtitle');
             $table->string('description', 2056);
@@ -32,7 +32,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::statement('ALTER TABLE listings ADD FULLTEXT INDEX fulltext_author_idx (authors)');
         DB::statement('ALTER TABLE listings ADD FULLTEXT INDEX fulltext_titles_idx (title, subtitle)');
     }
 
